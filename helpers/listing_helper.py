@@ -64,8 +64,6 @@ def publish_listing(data, listing_type, scraper):
 	if next_button:
 		# Go to the next step
 		scraper.element_click(next_button_selector)
-		# Add listing to multiple groups
-		add_listing_to_multiple_groups(data, scraper)
 
 	# Publish the listing
 	scraper.element_click('div[aria-label="Publish"]:not([aria-disabled])')
@@ -74,7 +72,6 @@ def publish_listing(data, listing_type, scraper):
 	scraper.find_element('input[placeholder="Search your listings"]', False)
 
 	# if not next_button:
-	post_listing_to_multiple_groups(data, listing_type, scraper)
 
 
 def generate_multiple_images_path(path, images):
@@ -157,22 +154,10 @@ def generate_title_for_listing_type(data, listing_type):
 
 	return title
 
-def add_listing_to_multiple_groups(data, scraper):
-	# Create an array for group names by spliting the string by this symbol ";"
-	group_names = data['Groups'].split(';')
 
-	# If the groups are empty do not do nothing
-	if not group_names:
-		return
-
-	# Post in different groups
-	for group_name in group_names:
 		# Remove whitespace before and after the name
-		group_name = group_name.strip()
 
-		scraper.element_click_by_xpath('//span[text()="' + group_name + '"]')
 
-def post_listing_to_multiple_groups(data, listing_type, scraper):
 	title = generate_title_for_listing_type(data, listing_type)
 	title_element = find_listing_by_title(title, scraper)
 
@@ -180,32 +165,20 @@ def post_listing_to_multiple_groups(data, listing_type, scraper):
 	if not title_element:
 		return
 
-	# Create an array for group names by spliting the string by this symbol ";"
-	group_names = data['Groups'].split(';')
 
-	# If the groups are empty do not do nothing
-	if not group_names:
 		return
 
-	search_input_selector = '[aria-label="Search for groups"]'
 
-	# Post in different groups
-	for group_name in group_names:
 		# Click on the Share button to the listing that we want to share
 		scraper.element_click('[aria-label="' + title + '"] + div [aria-label="Share"]')
 		
-		# Click on the Share to a group button
 		scraper.element_click_by_xpath('//span[text()="Group"]')
 
 		# Remove whitespace before and after the name
-		group_name = group_name.strip()
 
 		# Remove current text from this input
 		scraper.element_delete_text(search_input_selector)
-		# Enter the title of the group in the input for search
-		scraper.element_send_keys(search_input_selector, group_name[:51])
 	
-		scraper.element_click_by_xpath('//span[text()="' + group_name + '"]')
 		
 		if (scraper.find_element('[aria-label="Create a public post…"]', False, 3)):
 			scraper.element_send_keys('[aria-label="Create a public post…"]', data['Description'])
@@ -216,7 +189,6 @@ def post_listing_to_multiple_groups(data, listing_type, scraper):
 		# Wait till the post is posted successfully
 		scraper.element_wait_to_be_invisible('[role="dialog"]')
 		scraper.element_wait_to_be_invisible('[aria-label="Loading...]"')
-		scraper.find_element_by_xpath('//span[text()="Shared to your group."]', False, 10)
 
 def find_listing_by_title(title, scraper):
 	searchInput = scraper.find_element('input[placeholder="Search your listings"]', False)
