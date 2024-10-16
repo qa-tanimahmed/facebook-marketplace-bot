@@ -50,7 +50,6 @@ Facebook marketplace bot that automatically removes and then uploads listings fr
 	    - Linux/Mac `/Users/myuser/Pictures`
 	- `Photos Names` column should only have the names of photos separated with this symbol `;` like this `Photo 1.JPG; Photo 2.png; Photo3.jpg`
 	- Marketplace fields that you have to select an option like `Category`, `Condition`, `Vehicle Type`, `Fuel Type`. You have to type the exact name of the option that you want to choose.
-	- `Groups` column can have multiple groups and you will have to type their exact name and separate them by this symbol `;`. Example - `Group name 1; Group name 2; Group name`
 5. Open terminal inside the main project folder
 6. Run main.py with this command:
     - Windows / Linux
